@@ -3,7 +3,7 @@ import torch.nn as nn
 
 import models
 
-# This file provides the template Learner. The Learner is use in training/evaluation loop
+# This file provides the template Learner. The Learner is used in training/evaluation loop
 # The Learner implements the training procedure for specific task.
 # The default Learner is from classification task.
 
@@ -50,7 +50,7 @@ class Learner_Classification(nn.Module):
 
     def save_model(self, savename):
         model_state = self.model.state_dict()
-        if isinstance(self.model,torch.nn.DataParallel):  # multiGPU is a flag set in prepare_model
+        if isinstance(self.model,torch.nn.DataParallel):
             # Get rid of 'module' before the name of states
             model_state = self.model.module.state_dict()
         for key in model_state.keys():  # Always save it to cpu

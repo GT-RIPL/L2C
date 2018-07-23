@@ -15,7 +15,6 @@ from learners.similarity import Learner_DensePairSimilarity
 from utils.metric import Confusion, Timer, AverageMeter
 from modules.pairwise import Class2Simi
 import modules.criterion
-import dataloaders.default
 
 
 def prepare_task_target(input, target, args):
@@ -94,7 +93,7 @@ def train(epoch, train_loader, learner, args):
     if args.loss=='CE':
         print('[Train] ACC: ', confusion.acc())
     elif args.loss in ['KCL','CCL']:
-        args.Cluster2Class = confusion.optimal_assignment(train_loader.num_classes)  # Save the mapping in args to use in eval
+        args.cluster2Class = confusion.optimal_assignment(train_loader.num_classes)  # Save the mapping in args to use in eval
         if args.out_dim <= 20:  # Avoid to print a large confusion matrix
             confusion.show()
         print('Clustering scores:', confusion.clusterscores())
@@ -168,7 +167,9 @@ def run(args):
         args.out_dim = 2  # force it
 
     # Prepare dataloaders
-    train_loader, eval_loader = dataloaders.default.__dict__[args.dataset](args.batch_size, args.workers)
+    loaderFuncs = __import__('dataloaders.'+args.dataset_type)
+    loaderFuncs = loaderFuncs.__dict__[args.dataset_type]
+    train_loader, eval_loader = loaderFuncs.__dict__[args.dataset](args.batch_size, args.workers)
 
     # Prepare the model
     if args.out_dim<0:  # Use ground-truth number of classes/clusters
@@ -230,13 +231,14 @@ def run(args):
     # Start optimization
     if args.resume:
         args.start_epoch = learner.resume(args.resume) + 1  # Start from next epoch
+    KPI = 0
     for epoch in range(args.start_epoch, args.epochs):
         train(epoch, train_loader, learner, args)
         if eval_loader is not None and ((not args.skip_eval) or (epoch==args.epochs-1)):
             KPI = evaluate(eval_loader, model, args)
-            # Save checkpoint at each LR steps and the end of optimization
-            if epoch+1 in args.schedule+[args.epochs]:
-                learner.snapshot("outputs/%s_%s_%s"%(args.dataset, args.model_name, args.saveid), KPI)
+        # Save checkpoint at each LR steps and the end of optimization
+        if epoch+1 in args.schedule+[args.epochs]:
+            learner.snapshot("outputs/%s_%s_%s"%(args.dataset, args.model_name, args.saveid), KPI)
     return KPI
 
 
@@ -248,6 +250,7 @@ def get_args(argv):
                         help="The list of gpuid, ex:--gpuid 3 1. Negative value means cpu-only")
     parser.add_argument('--model_type', type=str, default='lenet', help="lenet(default)|vgg|resnet")
     parser.add_argument('--model_name', type=str, default='LeNet', help="LeNet(default)|LeNetC|VGGS|VGG8|VGG16|ResNet18|ResNet101 ...")
+    parser.add_argument('--dataset_type', type=str, default='default')
     parser.add_argument('--dataset', type=str, default='MNIST', help="MNIST(default)|CIFAR10|CIFAR100|Omniglot|Omniglot_eval_Old_Church_Slavonic ...")
     parser.add_argument('--out_dim', type=int, default=-1,
                         help="Output dimension of network. Default:-1 (Use ground-truth)")

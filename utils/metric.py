@@ -126,7 +126,7 @@ class Confusion(object):
             r,assign = hungarian(mat)
         self.conf = self.conf[:,assign]
         self.gt_n_cluster = gt_n_cluster
-        return self
+        return assign
         
     def show(self,width=6,row_labels=None,column_labels=None):
         print("Confusion Matrix:")
