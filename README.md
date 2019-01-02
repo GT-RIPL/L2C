@@ -9,9 +9,9 @@ This repository provides the PyTorch implementation of the [transfer learning sc
 
 <sub><sup>*It is renamed from [CCL](https://arxiv.org/abs/1806.11078)</sup></sub>
 
-This repository covered following references:
+This repository covers following references:
 ```
-@article{Hsu18_MCL,
+@article{Hsu19_MCL,
 	title =	    {Multi-class classification without multi-class labels},
 	author =    {Yen-Chang Hsu, Zhaoyang Lv, Joel Schlosser, Phillip Odom, Zsolt Kira},
 	booktitle = {International Conference on Learning Representations (ICLR)},
@@ -43,10 +43,10 @@ This repository supports PyTorch 1.0, python 2.7, 3.6, and 3.7.
 pip install -r requirements.txt
 ```
 ## Demo
-### Supervised Clustering
+### Supervised Classification/Clustering with only pairwise similarity
 ```bash
 # A quick trial:
-python demo.py  # Dataset:MNIST, Network:LeNet, Loss:MCL
+python demo.py  # Default Dataset:MNIST, Network:LeNet, Loss:MCL
 python demo.py --loss KCL
 
 # Lookup available options:
@@ -100,6 +100,12 @@ Tengwar                        |25|67.7%|76.4%|82.5%|85.5%
 Tibetan                        |42|81.8%|80.2%|84.3%|81.9%
 ULOG                           |26|53.3%|77.1%|73.0%|89.1%
 --Average--                    |  |75.0%|82.5%|82.4%|85.7%
+
+### Compare MCL and KCL
+
+The loss surface of MCL is more similar to the cross-entropy (CE) than the KCL. MCL is also empirically easier for optimization than KCL. For details, please refer to the [ICLR paper](https://openreview.net/forum?id=SJzR2iRcK7).
+
+<a href="https://openreview.net/forum?id=SJzR2iRcK7"><img src="fig/loss_surface_compare.png" width="640"></a>
 
 ## Related Applications
 ### Lane detection for autonomous driving / Instance segmentation
