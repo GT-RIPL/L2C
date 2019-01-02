@@ -4,7 +4,7 @@ A clustering strategy with deep neural networks. [This blog article](https://mla
 
 ## Introduction
 This repository provides the PyTorch implementation of the [transfer learning schemes (L2C)](https://arxiv.org/abs/1711.10125) and two learning criteria useful for deep clustering:
-- [Meta Classification Likelihood (MCL)*](https://openreview.net/forum?id=SJzR2iRcK7) - News: Accepted to ICLR2019
+- [Meta Classification Likelihood (MCL)*](https://openreview.net/forum?id=SJzR2iRcK7) - News: Accepted to ICLR2019 (Title: "Multi-class classification without multi-class labels").
 - [KLD-based Contrastive Loss (KCL)](https://arxiv.org/abs/1511.06321)
 
 <sub><sup>*It is renamed from [CCL](https://arxiv.org/abs/1806.11078)</sup></sub>
@@ -103,9 +103,9 @@ ULOG                           |26|53.3%|77.1%|73.0%|89.1%
 
 ### Compare MCL and KCL
 
-The loss surface of MCL is more similar to the cross-entropy (CE) than the KCL. MCL is also empirically easier for optimization than KCL. For details, please refer to the [ICLR paper](https://openreview.net/forum?id=SJzR2iRcK7).
+The loss surface of MCL is more similar to the cross-entropy (CE) than KCL. Empirically, MCL converged faster than KCL. For details, please refer to the [ICLR paper](https://openreview.net/forum?id=SJzR2iRcK7).
 
-<a href="https://openreview.net/forum?id=SJzR2iRcK7"><img src="fig/loss_surface_compare.png" width="640"></a>
+<a href="https://openreview.net/pdf?id=SJzR2iRcK7"><img src="fig/loss_surface_compare.png" width="640"></a>
 
 ## Related Applications
 ### Lane detection for autonomous driving / Instance segmentation
