@@ -5,8 +5,8 @@ from demo import run, get_args
 parser = argparse.ArgumentParser()
 parser.add_argument('--gpuid', type=int, default=0,
                     help="Negative value means cpu-only")
-parser.add_argument('--loss', type=str, default='CCL', choices=['KCL', 'CCL'],
-                    help="The clustering criteria. Default: CCL")
+parser.add_argument('--loss', type=str, default='MCL', choices=['KCL', 'MCL'],
+                    help="The clustering criteria. Default: MCL")
 parser.add_argument('--num_cluster', type=int, default=100,
                     help="The number of cluster. Default: 100 (unknown number of cluster)")
 config = parser.parse_args()

@@ -21,7 +21,7 @@ def prepare_task_target(input, target, args):
     # Prepare the target for different criterion/tasks
     if args.loss == 'CE':  # For standard classification
         train_target = eval_target = target
-    elif args.loss in ['KCL', 'CCL']:  # For clustering
+    elif args.loss in ['KCL', 'MCL']:  # For clustering
         if args.use_SPN:  # For unsupervised clustering
             # Feed the input to SPN to get predictions
             _, train_target = args.SPN(input).max(1)  # Binaries the predictions
@@ -58,7 +58,7 @@ def train(epoch, train_loader, learner, args):
     data_timer.tic()
     batch_timer.tic()
     if args.print_freq>0:  # Enable to print mini-log
-        print('Itr\t\tTime\t\t  Data\t\t  Loss')
+        print('Itr            |Batch time     |Data Time      |Loss')
     for i, (input, target) in enumerate(train_loader):
 
         data_time.update(data_timer.toc())  # measure data loading time
@@ -66,7 +66,7 @@ def train(epoch, train_loader, learner, args):
         # Prepare the inputs
         if args.use_gpu:
             input = input.cuda()
-            target = target.cuda(async=True)  # async+pin_mem = minor speed gain
+            target = target.cuda()
         train_target, eval_target = prepare_task_target(input, target, args)
 
         # Optimization
@@ -82,7 +82,7 @@ def train(epoch, train_loader, learner, args):
         # Mini-Logs
         losses.update(loss, input.size(0))
         if args.print_freq>0 and ((i%args.print_freq==0) or (i==len(train_loader)-1)):
-            print('[{0}/{1}]\t'
+            print('[{0:6d}/{1:6d}]\t'
                   '{batch_time.val:.4f} ({batch_time.avg:.4f})\t'
                   '{data_time.val:.4f} ({data_time.avg:.4f})\t'
                   '{loss.val:.3f} ({loss.avg:.3f})'.format(
@@ -92,7 +92,7 @@ def train(epoch, train_loader, learner, args):
     # Loss-specific information
     if args.loss=='CE':
         print('[Train] ACC: ', confusion.acc())
-    elif args.loss in ['KCL','CCL']:
+    elif args.loss in ['KCL','MCL']:
         args.cluster2Class = confusion.optimal_assignment(train_loader.num_classes)  # Save the mapping in args to use in eval
         if args.out_dim <= 20:  # Avoid to print a large confusion matrix
             confusion.show()
@@ -117,7 +117,7 @@ def evaluate(eval_loader, model, args):
         if args.use_gpu:
             with torch.no_grad():
                 input = input.cuda()
-                target = target.cuda(async=True)
+                target = target.cuda()
         _, eval_target = prepare_task_target(input, target, args)
 
         # Inference
@@ -132,7 +132,7 @@ def evaluate(eval_loader, model, args):
     if args.loss == 'CE':
         KPI = confusion.acc()
         print('[Test] ACC: ', KPI)
-    elif args.loss in ['KCL', 'CCL']:
+    elif args.loss in ['KCL', 'MCL']:
         confusion.optimal_assignment(eval_loader.num_classes, args.cluster2Class)
         if args.out_dim<=20:
             confusion.show()
@@ -156,7 +156,7 @@ def run(args):
         # Classification
         LearnerClass = Learner_Classification
         criterion = nn.CrossEntropyLoss()
-    elif args.loss in ['KCL', 'CCL']:
+    elif args.loss in ['KCL', 'MCL']:
         # Clustering
         LearnerClass = Learner_Clustering
         criterion = modules.criterion.__dict__[args.loss]()
@@ -258,8 +258,8 @@ def get_args(argv):
     parser.add_argument('--epochs', type=int, default=30, help="End epoch")
     parser.add_argument('--batch_size', type=int, default=100)
     parser.add_argument('--lr', type=float, default=0.001, help="Learning rate")
-    parser.add_argument('--loss', type=str, default='CCL', choices=['CE', 'KCL', 'CCL', 'DPS'],
-                        help="CE(cross-entropy)|KCL|CCL(default)|DPS(Dense-Pair Similarity)")
+    parser.add_argument('--loss', type=str, default='MCL', choices=['CE', 'KCL', 'MCL', 'DPS'],
+                        help="CE(cross-entropy)|KCL|MCL(default)|DPS(Dense-Pair Similarity)")
     parser.add_argument('--schedule', nargs="+", type=int, default=[10, 20],
                         help="The list of epoch numbers to reduce learning rate by factor of 0.1")
     parser.add_argument('--optimizer', type=str, default='Adam', choices=['Adam', 'SGD'])

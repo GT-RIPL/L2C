@@ -19,8 +19,8 @@ class KCL(nn.Module):
         return output
 
 
-class CCL(nn.Module):
-    # Constrained Clustering Likelihood (CCL)
+class MCL(nn.Module):
+    # Meta Classification Likelihood (MCL)
 
     eps = 1e-7 # Avoid calculating log(0). Use the small value of float16.
         
@@ -31,5 +31,5 @@ class CCL(nn.Module):
         P = prob1.mul_(prob2)
         P = P.sum(1)
         P.mul_(simi).add_(simi.eq(-1).type_as(P))
-        neglogP = -P.add_(CCL.eps).log_()
+        neglogP = -P.add_(MCL.eps).log_()
         return neglogP.mean()

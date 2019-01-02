@@ -10,7 +10,7 @@ class LeNet(nn.Module):
 
         # !!! [Architecture design tip] !!!
         # The KCL has much better convergence of optimization when the BN layers are added.
-        # CCL is robust even without BN layer.
+        # MCL is robust even without BN layer.
         self.conv = nn.Sequential(
             nn.Conv2d(in_channel, 20, 5, padding=2),
             nn.BatchNorm2d(20),
