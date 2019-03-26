@@ -4,7 +4,7 @@ A clustering strategy with deep neural networks. [This blog article](https://mla
 
 ## Introduction
 This repository provides the PyTorch implementation of the [transfer learning schemes (L2C)](https://arxiv.org/abs/1711.10125) and two learning criteria useful for deep clustering:
-- [Meta Classification Likelihood (MCL)*](https://openreview.net/forum?id=SJzR2iRcK7) - News: Accepted to ICLR2019 (Title: "Multi-class classification without multi-class labels").
+- [Meta Classification Likelihood (MCL)*](https://arxiv.org/abs/1901.00544) - News: Accepted to [ICLR2019](https://openreview.net/forum?id=SJzR2iRcK7) (Title: "Multi-class classification without multi-class labels").
 - [KLD-based Contrastive Loss (KCL)](https://arxiv.org/abs/1511.06321)
 
 <sub><sup>*It is renamed from [CCL](https://arxiv.org/abs/1806.11078)</sup></sub>
