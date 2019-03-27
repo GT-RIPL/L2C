@@ -120,4 +120,4 @@ The loss surface of MCL is more similar to the cross-entropy (CE) than KCL. Empi
 ```
 
 ### Acknowledgments
-This work was supported by the National Science Foundation and National Robotics Initiative (grant # IIS-1426998).
+This work was supported by the National Science Foundation and National Robotics Initiative (grant # IIS-1426998) and DARPA’s Lifelong Learning Machines (L2M) program, under Cooperative Agreement HR0011-18-2-001.
