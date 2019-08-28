@@ -11,7 +11,7 @@ This repository provides the PyTorch implementation of the [transfer learning sc
 
 This repository covers following references:
 ```
-@article{Hsu19_MCL,
+@inproceedings{Hsu19_MCL,
 	title =	    {Multi-class classification without multi-class labels},
 	author =    {Yen-Chang Hsu, Zhaoyang Lv, Joel Schlosser, Phillip Odom, Zsolt Kira},
 	booktitle = {International Conference on Learning Representations (ICLR)},
@@ -19,7 +19,7 @@ This repository covers following references:
 	url =       {https://openreview.net/forum?id=SJzR2iRcK7}
 }
 
-@article{Hsu18_L2C,
+@inproceedings{Hsu18_L2C,
 	title =     {Learning to cluster in order to transfer across domains and tasks},
 	author =    {Yen-Chang Hsu and Zhaoyang Lv and Zsolt Kira},
 	booktitle = {International Conference on Learning Representations (ICLR)},
@@ -27,7 +27,7 @@ This repository covers following references:
 	url =       {https://openreview.net/forum?id=ByRWCqvT-}
 }
 
-@article{Hsu16_KCL,
+@inproceedings{Hsu16_KCL,
 	title =	    {Neural network-based clustering using pairwise constraints},
 	author =    {Yen-Chang Hsu and Zsolt Kira},
 	booktitle = {ICLR workshop},
