@@ -66,8 +66,8 @@ class Confusion(object):
         self.conf = self.conf.cuda()
 
     def add(self, output, target):
-        output = output.squeeze_()
-        target = target.squeeze_()
+        output = output.squeeze()
+        target = target.squeeze()
         assert output.size(0) == target.size(0), \
                 'number of targets and outputs do not match'
         if output.ndimension()>1: #it is the raw probabilities over classes
